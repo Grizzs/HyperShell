@@ -1,3 +1,5 @@
+import { pool } from '../src/db.js';
+
 export class CommandManager {
   constructor(fileSystem) {
     this.fs = fileSystem;
@@ -10,11 +12,15 @@ export class CommandManager {
     this.commands['ls'] = {
       description: 'Lista diretórios e arquivos',
       execute: async (args) => {
-        if (this.fs) {
-          return this.fs.ls().join('  ') || 'Diretório vazio';
-        }
-        return `PASTA2  wannacry.exe  tj.exe  teste.exe`;
-      }
+        const currentDirId = 1; 
+        const res = await pool.query(`SELECT nome, path FROM diretorio WHERE idpai = $1 ORDER BY nome`,
+        [currentDirId]
+        );
+        if(!res.rows.length) return 'Diretório Vazio';
+
+        return res.rows.map(row => `      ${row.nome}     ${row.path}`)
+        .join('\r\n')
+    }
     };
 
   }
