@@ -25,7 +25,7 @@ wss.on('connection', (ws) => {
     if (!input) return;
 
     try {
-      const output = await cmdManager.execute(input);
+      const output = await cmdManager.execute(input, ws);
 
       if (output) {
         ws.send(JSON.stringify({

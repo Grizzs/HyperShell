@@ -44,6 +44,11 @@ onMounted(() => {
     if (type === "output") {
       term.writeln(data);
     }
+    else if(type == 'clear'){
+      term.write(banner);
+      term.clear();
+      
+    }
     else if (type === "prompt"){
       term.write("\r\n" + data)
     }
