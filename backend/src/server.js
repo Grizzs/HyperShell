@@ -1,10 +1,11 @@
 import app from './app.js';
 import { WebSocketServer } from 'ws';
-import { executarCmd} from '../comandos/index.js';
 import { loadDiretorio } from '../diretorios/diretorio.js';
+import { CommandManager } from '../comandos/manager.js';
 
 const PORT = 3000;
-
+const PROMPT = 'user@hypershell:$ ';
+const cmdManager = new CommandManager(null);
 
 const server = app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
@@ -24,22 +25,23 @@ wss.on('connection', (ws) => {
     if (!input) return;
 
     try {
-      const output = await executarCmd(input);
+      const output = await cmdManager.execute(input);
 
       if (output) {
         ws.send(JSON.stringify({
-          type: "output", data: `\r${output}`
+          type: "output", data: `\n${output}`
         }));
       }
-      ws.send(JSON.stringify({ type: "prompt", data: `user@hypershell:${getCurrentPath()}$`}))
+      ws.send(JSON.stringify({ type: "prompt", data: PROMPT}))
     
     } catch (err) {
-      ws.send(`Erro ao executar comando: ${err.message}\r\n$ `);
+      ws.send(JSON.stringify({ type: "output", data: `Erro: ${err.message}` }));
+      ws.send(JSON.stringify({ type: "prompt", data: PROMPT }));
     }
   });
   ws.send(JSON.stringify({
     type: "prompt",
-    data: `user@hypershell}$ `
+    data: PROMPT
   }));
 
   ws.on('close', () => console.log('Client desconectado'));

@@ -33,10 +33,10 @@ onMounted(() => {
   term.focus();
 
   term.write(banner);
-  
 
   let userInput = '';
 
+ 
   ws.onmessage = (event) => {
 
      const { type, data } = JSON.parse(event.data);
