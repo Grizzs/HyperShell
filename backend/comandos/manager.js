@@ -1,14 +1,14 @@
 import { pool } from '../src/db.js';
 
-export class CommandManager {
+export class Manager {
   constructor(fileSystem) {
     this.fs = fileSystem;
     this.commands = {};
 
-    this.registerCommands();
+    this.registrador();
   }
 
-  registerCommands() {
+  registrador() {
     this.commands['ls'] = {
       description: 'Lista diretórios e arquivos',
       execute: async (args) => {

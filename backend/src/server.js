@@ -1,7 +1,7 @@
 import app from './app.js';
 import { WebSocketServer } from 'ws';
 import { loadDiretorio } from '../diretorios/diretorio.js';
-import { CommandManager } from '../comandos/manager.js';
+import { Manager } from '../comandos/manager.js';
 
 const PORT = 3000;
 const PROMPT = 'user@hypershell:$ ';
