@@ -1,14 +1,14 @@
 import app from './app.js';
 import { WebSocketServer } from 'ws';
-import { executarCmd, getCurrentPath } from '../comandos/index.js';
+import { executarCmd} from '../comandos/index.js';
 import { loadDiretorio } from '../diretorios/diretorio.js';
 
 const PORT = 3000;
 
-const server = app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
 
+const server = app.listen(PORT, () => {
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
+});
 
 (async () => {
   await loadDiretorio();
@@ -39,7 +39,7 @@ wss.on('connection', (ws) => {
   });
   ws.send(JSON.stringify({
     type: "prompt",
-    data: `user@hypershell:${getCurrentPath()}$ `
+    data: `user@hypershell}$ `
   }));
 
   ws.on('close', () => console.log('Client desconectado'));
