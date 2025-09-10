@@ -3,13 +3,13 @@ import { pool } from '../src/db.js';
 export class Manager {
   constructor(fileSystem) {
     this.fs = fileSystem;
-    this.commands = {};
+    this.comandos = {};
 
     this.registrador();
   }
 
   registrador() {
-    this.commands['ls'] = {
+    this.comandos['ls'] = {
       description: 'Lista diretórios e arquivos',
       execute: async (args) => {
         const currentDirId = 1; 
@@ -27,7 +27,7 @@ export class Manager {
 
   async execute(input) {
     const [cmdName, ...args] = input.trim().split(" ");
-    const command = this.commands[cmdName];
+    const command = this.comandos[cmdName];
     if (!command) {
       return `Comando "${cmdName}" não encontrado`;
     }
