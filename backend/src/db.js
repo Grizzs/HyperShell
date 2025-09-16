@@ -1,10 +1,13 @@
+import dotenv from "dotenv";
+dotenv.config();
 import pkg from 'pg';
 const { Pool } = pkg;
 
+
 export const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'terminal',
-  password: 'INFO341983',
-  port: 5432,
+  host: process.env.DB_HOST,     
+  user: process.env.DB_USER,      
+  password: process.env.DB_PASS,  
+  database: process.env.DB_NAME,  
+  port: Number(process.env.DB_PORT) || 5432
 });
