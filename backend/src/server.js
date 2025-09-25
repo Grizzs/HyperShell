@@ -11,14 +11,20 @@ const server = app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
 
-(async () => {
-  await loadDiretorio();
-})();
+console.log("Bombando")
+
+const getPrompt = (ws) => {
+  return `user@${ws.currentPath || '/'}:$ `;
+};
 
 const wss = new WebSocketServer({ server });
 
 wss.on('connection', (ws) => {
   console.log('Client conectado ao WebSocket');
+
+  ws.currentDirId = 20;
+  ws.currentPath = 'user';
+
 
   ws.on('message', async (message) => {
     const input = message.toString().trim();
@@ -32,16 +38,16 @@ wss.on('connection', (ws) => {
           type: "output", data: `\n${output}`
         }));
       }
-      ws.send(JSON.stringify({ type: "prompt", data: PROMPT}))
+      ws.send(JSON.stringify({ type: "prompt", data: getPrompt(ws)}))
     
     } catch (err) {
       ws.send(JSON.stringify({ type: "output", data: `Erro: ${err.message}` }));
-      ws.send(JSON.stringify({ type: "prompt", data: PROMPT }));
+      ws.send(JSON.stringify({ type: "prompt", data: getPrompt(ws)}));
     }
   });
   ws.send(JSON.stringify({
     type: "prompt",
-    data: PROMPT
+    data: getPrompt(ws)
   }));
 
   ws.on('close', () => console.log('Client desconectado'));
