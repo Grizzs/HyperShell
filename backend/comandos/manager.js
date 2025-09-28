@@ -1,5 +1,6 @@
 import { pool } from '../src/db.js';
 
+
 export class Manager {
   constructor(fileSystem) {
     this.fs = fileSystem;
@@ -87,14 +88,22 @@ export class Manager {
           return `${ws.currentPath}`;
       } 
     }
-
     this.comandos['whoami'] = {
       descricao: "Quem sou Eu",
       execute: async () => {
         return "User"
       }
     }
-    
+    this.comandos['linkedin'] = {
+      descricao: "Linkedin do Criador",
+      execute: async (args, ws) => {
+        ws.send(JSON.stringify({ 
+          type: 'url', 
+          url: 'https://www.linkedin.com/in/cristian-camillo-49a048236/' 
+        }));
+        return "Abrindo LinkedIn...";
+      }
+    }
 
   }
 

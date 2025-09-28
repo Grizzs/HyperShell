@@ -39,7 +39,7 @@ onMounted(() => {
  
   ws.onmessage = (event) => {
 
-     const { type, data } = JSON.parse(event.data);
+     const { type, data, url } = JSON.parse(event.data);
 
     if (type === "output") {
       term.writeln(data);
@@ -47,10 +47,13 @@ onMounted(() => {
     else if(type == 'clear'){
       term.write(banner);
       term.clear();
-      
     }
     else if (type === "prompt"){
       term.write("\r\n" + data)
+    }
+    else if (type == 'url'){
+      console.log('Pegamo a URL', url)
+      window.open(url)
     }
   };
 
