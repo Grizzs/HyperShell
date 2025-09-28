@@ -13,16 +13,28 @@ export class Manager {
     this.comandos['ls'] = {
       descricao: 'Listar diretórios',
       execute: async (args, ws) => {
-        const res = await pool.query(
+        const dirRes = await pool.query(
           `SELECT nome, path FROM diretorio WHERE idpai = $1 ORDER BY nome`,
           [ws.currentDirId]
         );
+        const arqRes = await pool.query(
+          `SELECT nome_arquivo, path FROM arquivo WHERE idiretorio = $1 ORDER BY nome_arquivo`,
+          [ws.currentDirId]
+        );
+        
+        if (!dirRes.rows.length && !arqRes.rows.length) return 'Diretório Vazio';
 
-        if (!res.rows.length) return 'Diretório Vazio';
+        let arqDir = []; 
 
-        return res.rows
-          .map(row => `      ${row.nome}     ${row.path}`)
-          .join('\r\n');
+        dirRes.rows.forEach(row => {
+          arqDir.push(`\x1b[1;34m ${row.nome.padEnd(20)}\x1b[0m${row.path}`);
+        });
+        
+        arqRes.rows.forEach(row => {
+          arqDir.push(`\x1b[1;32m ${row.nome_arquivo.padEnd(20)} \x1b[0m ${row.path}`);
+        });
+        
+        return arqDir.join('\r\n');
       }
     };
 

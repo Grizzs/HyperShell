@@ -4,7 +4,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, withDirectives } from 'vue';
 import { Terminal } from 'xterm';
 import 'xterm/css/xterm.css';
 import banner from '../../assets/MainBanner.txt?raw'; 
@@ -17,7 +17,9 @@ onMounted(() => {
     cols: 190,
     rows: 40,
     cursorBlink: true,
-    fontSize: 15,
+    cursorStyle: "underline",
+    cursorInactiveStyle: "block",
+    fontSize: 16,
     theme: {
       background: '#1e1e1e',
       foreground: '#ffffff'
@@ -52,7 +54,7 @@ onMounted(() => {
       term.write("\r\n" + data)
     }
     else if (type == 'url'){
-      console.log('Pegamo a URL', url)
+      console.log('Pegamos a URL', url)
       window.open(url)
     }
   };
@@ -73,10 +75,6 @@ onMounted(() => {
     }
   });
 });
-
-
-
-
 </script>
 
 <style scoped>
