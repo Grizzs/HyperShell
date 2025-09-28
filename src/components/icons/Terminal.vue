@@ -22,11 +22,12 @@ onMounted(() => {
     cursorBlink: true,
     cursorStyle: "underline",
     cursorInactiveStyle: "block",
-    fontSize: 16,
+    fontSize: 20,
     theme: {
-      background: '#1e1e1e',
-      foreground: '#ffffff'
-    }
+      background: '#131e1e',
+      foreground: '#79FA05'
+    },
+    fontWeight: 900
   });
 
   const ws = new WebSocket('ws://localhost:3000');
@@ -37,7 +38,7 @@ onMounted(() => {
   term.open(HyperShell.value);
   term.focus();
 
-  term.write(banner);
+  term.write(`\x1b[1;32m${banner}\x1b[0m`);
 
   let userInput = '';
 
@@ -52,7 +53,7 @@ onMounted(() => {
         term.writeln(data);
         break;
       case "clear":
-        term.write(banner)
+        term.write(`\x1b[1;32m${banner}\x1b[0m`)
         term.clear();
         break;
       case "prompt":
@@ -63,7 +64,7 @@ onMounted(() => {
         window.open(url);
         break;
       case "banner":
-        term.write(banner);
+        term.write(`\x1b[1;32m${banner}\x1b[0m`);
         break;
     }
   };

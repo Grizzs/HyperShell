@@ -9,7 +9,7 @@ export class Manager {
 
   registrador() {
     this.comandos['ls'] = {
-      descricao: 'Listar diretórios',
+      descricao: 'Listar Diretórios',
       execute: async (args, ws) => {
         const dirRes = await pool.query(
           `SELECT nome, path FROM diretorio WHERE idpai = $1 ORDER BY nome`,
@@ -37,7 +37,7 @@ export class Manager {
     };
 
     this.comandos['clear'] = {
-      descricao: "Limpa tela",
+      descricao: "Limpa Tela",
       execute: async (args, ws) => {
         ws.send(JSON.stringify({ type: 'clear' }));
         return null;
@@ -126,7 +126,10 @@ export class Manager {
       descricao: 'Mostra Comandos',
       execute: async (args, ws) => {
         const comandos = Object.keys(this.comandos);
-        let output = ['Comandos disponíveis:', ''];
+        let output = [
+            '  \x1b[1;36m╔══════════════════════════════════╗\x1b[0m',
+            '  \x1b[1;36m║        MANUAL DE COMANDOS        ║\x1b[0m', 
+            '  \x1b[1;36m╚══════════════════════════════════╝\x1b[0m', ''];
         
         comandos.forEach(cmd => {
           const desc = this.comandos[cmd].descricao || '';
