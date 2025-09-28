@@ -82,7 +82,7 @@ export class Manager {
       }
     };
 
-    // adicionar mais depois
+    
 
   }
 
