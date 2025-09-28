@@ -35,7 +35,7 @@ wss.on('connection', (ws) => {
 
       if (output) {
         ws.send(JSON.stringify({
-          type: "output", data: `\n${output}`
+          type: "output", data: `${output}`
         }));
       }
       ws.send(JSON.stringify({ type: "prompt", data: getPrompt(ws)}))

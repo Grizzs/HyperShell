@@ -81,7 +81,19 @@ export class Manager {
         return "";
       }
     };
+    this.comandos['pwd'] = {
+      descricao: "Listar Caminho",
+      execute: async (args, ws) => {
+          return `${ws.currentPath}`;
+      } 
+    }
 
+    this.comandos['whoami'] = {
+      descricao: "Quem sou Eu",
+      execute: async () => {
+        return "User"
+      }
+    }
     
 
   }
