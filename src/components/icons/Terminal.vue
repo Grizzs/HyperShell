@@ -12,6 +12,9 @@ import banner from '../../assets/MainBanner.txt?raw';
 const HyperShell = ref(null);
 let term;
 
+let inputAtual = '';
+let textoPrompt = ''
+
 onMounted(() => {
   term = new Terminal({
     cols: 190,

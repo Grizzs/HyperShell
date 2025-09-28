@@ -2,10 +2,8 @@ import { pool } from '../src/db.js';
 
 
 export class Manager {
-  constructor(fileSystem) {
-    this.fs = fileSystem;
+  constructor() {
     this.comandos = {};
-
     this.registrador();
   }
 
@@ -124,6 +122,22 @@ export class Manager {
         }));
       }
     }
+    this.comandos['help'] = {
+      descricao: 'Mostra Comandos',
+      execute: async (args, ws) => {
+        const comandos = Object.keys(this.comandos);
+        let output = ['Comandos disponíveis:', ''];
+        
+        comandos.forEach(cmd => {
+          const desc = this.comandos[cmd].descricao || '';
+          output.push(`  \x1b[1;33m${cmd.padEnd(15)}\x1b[0m - ${desc}`);
+        });
+        
+        return output.join('\r\n');
+      }
+  };
+    
+    
 
   }
 

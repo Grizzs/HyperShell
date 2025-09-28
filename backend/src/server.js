@@ -5,7 +5,7 @@ import { Manager } from '../comandos/manager.js';
 
 const PORT = 3000;
 const PROMPT = 'user@hypershell:$ ';
-const cmdManager = new Manager(null);
+const cmdManager = new Manager();
 
 const server = app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
