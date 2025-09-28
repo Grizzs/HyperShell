@@ -116,6 +116,14 @@ export class Manager {
         return "Abrindo LinkedIn...";
       }
     }
+    this.comandos['banner'] = {
+      descricao: "Gera Banner",
+      execute: async (args, ws) => {
+        ws.send(JSON.stringify({ 
+          type: 'banner'
+        }));
+      }
+    }
 
   }
 

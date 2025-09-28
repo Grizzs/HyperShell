@@ -43,19 +43,25 @@ onMounted(() => {
 
      const { type, data, url } = JSON.parse(event.data);
 
-    if (type === "output") {
-      term.writeln(data);
-    }
-    else if(type == 'clear'){
-      term.write(banner);
-      term.clear();
-    }
-    else if (type === "prompt"){
-      term.write("\r\n" + data)
-    }
-    else if (type == 'url'){
-      console.log('Pegamos a URL', url)
-      window.open(url)
+    switch(type){ 
+
+      case "output":
+        term.writeln(data);
+        break;
+      case "clear":
+        term.write(banner)
+        term.clear();
+        break;
+      case "prompt":
+        term.write("\r\n" + data);
+        break;
+      case "url":
+        console.log('Pegamos a URL', url);
+        window.open(url);
+        break;
+      case "banner":
+        term.write(banner);
+        break;
     }
   };
 
