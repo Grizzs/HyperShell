@@ -1,6 +1,8 @@
 import { pool } from '../src/db.js';
 
 
+let last_cmd = ''
+
 export class Manager {
   constructor() {
     this.comandos = {};
@@ -152,6 +154,8 @@ export class Manager {
       return `Comando "${cmdName}" não encontrado`;
     }
     console.log("Executando:", command);
+    last_cmd = `${cmdName} ${args.join(' ')}`;
+
     return await command.execute(args, ws);
   }
 }
