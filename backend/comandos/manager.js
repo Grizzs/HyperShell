@@ -31,7 +31,7 @@ export class Manager {
         });
         
         arqRes.rows.forEach(row => {
-          arqDir.push(`\x1b[1;32m ${row.nome_arquivo.padEnd(20)} \x1b[0m ${row.path}`);
+          arqDir.push(`\x1b[1;32m ${row.nome_arquivo.padEnd(20)}        \x1b[0m ${row.path}`);
         });
         
         return arqDir.join('\r\n');
@@ -140,6 +140,14 @@ export class Manager {
         
         return output.join('\r\n');
       }
+    }
+    this.comandos['teste'] = {
+      descricao: "Limpa Tela",
+      execute: async (args, ws) => {
+        ws.send(JSON.stringify({ type: 'clearAll' }));
+        return null;
+      }
+    
   };
     
     
@@ -159,3 +167,11 @@ export class Manager {
     return await command.execute(args, ws);
   }
 }
+
+
+/*
+function clearAll(ws){
+  ws.send(JSON.stringify({ type: 'clearAll' }));
+  return null;
+}
+  */ 

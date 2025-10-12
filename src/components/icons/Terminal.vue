@@ -5,20 +5,16 @@
 
 <script setup>
 import { ref, onMounted, withDirectives } from 'vue';
+import { FitAddon } from 'xterm-addon-fit';
 import { Terminal } from 'xterm';
-import 'xterm/css/xterm.css';
+import 'xterm/css/xterm.css'
 import banner from '../../assets/MainBanner.txt?raw'; 
 
 const HyperShell = ref(null);
 let term;
 
-let inputAtual = '';
-let textoPrompt = ''
-
 onMounted(() => {
   term = new Terminal({
-    cols: 190,
-    rows: 40,
     cursorBlink: true,
     cursorStyle: "underline",
     cursorInactiveStyle: "block",
@@ -30,12 +26,16 @@ onMounted(() => {
     fontWeight: 900
   });
 
+  const fitAddon = new FitAddon();
+  term.loadAddon(fitAddon);
+
   const ws = new WebSocket('ws://localhost:3000');
   ws.onopen = () => {
       console.log('Conectado ao WebSocket do backend');
   };
   
   term.open(HyperShell.value);
+  fitAddon.fit()
   term.focus();
 
   term.write(`\x1b[1;32m${banner}\x1b[0m`);
@@ -66,8 +66,12 @@ onMounted(() => {
       case "banner":
         term.write(`\x1b[1;32m${banner}\x1b[0m`);
         break;
+      case "clearAll":
+        term.clear();
     }
   };
+
+  
 
   term.onData((data) => {
     if (data === '\r') { 
