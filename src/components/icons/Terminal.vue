@@ -1,17 +1,48 @@
 <template>
 <div ref="HyperShell" class="terminal-container"></div>
-
 </template>
 
 <script setup>
-import { ref, onMounted, withDirectives } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { FitAddon } from 'xterm-addon-fit';
 import { Terminal } from 'xterm';
-import 'xterm/css/xterm.css'
-import banner from '../../assets/MainBanner.txt?raw'; 
+import 'xterm/css/xterm.css';
+import banner from '../../assets/MainBanner.txt?raw';
 
 const HyperShell = ref(null);
 let term;
+let fitAddon;
+let ws;
+let resizeTimeout;
+
+const canFitBanner = (cols) => {
+  const bannerLines = banner.split('\n');
+  const maxLineLength = Math.max(...bannerLines.map(line => line.length));
+  return cols >= maxLineLength;
+};
+
+
+const displayBanner = () => {
+  const cols = term.cols;
+  
+  if (canFitBanner(cols)) {
+    term.write(`\x1b[1;32m${banner}\x1b[0m`);
+  } else {
+    term.writeln('\x1b[1;32m╔════════════════════════════════════════╗\x1b[0m');
+    term.writeln('\x1b[1;32m║      HyperShell (HS)                   ║\x1b[0m');
+    term.writeln('\x1b[1;32m║  Not A Corporation. All Hype reserved. ║\x1b[0m');
+    term.writeln('\x1b[1;32m╚════════════════════════════════════════╝\x1b[0m');
+    term.writeln('');
+
+      term.writeln('');
+      term.writeln('Bem vindo ao HyperShell');
+      term.writeln('');
+      term.writeln('Curso Técnico em Desenvolvimento de Sistemas - IFsul CAVG');
+      term.writeln('');
+  }
+  
+
+};
 
 onMounted(() => {
   term = new Terminal({
@@ -21,61 +52,60 @@ onMounted(() => {
     fontSize: 20,
     theme: {
       background: '#131e1e',
-      foreground: '#79FA05'
+      foreground: '#79FA05',
     },
-    fontWeight: 900
+    rows: 24,
+    cols: 80
   });
 
-  const fitAddon = new FitAddon();
+  fitAddon = new FitAddon();
   term.loadAddon(fitAddon);
 
-  const ws = new WebSocket('ws://localhost:3000');
-  ws.onopen = () => {
-      console.log('Conectado ao WebSocket do backend');
-  };
+  ws = new WebSocket('ws://localhost:3000');
   
+  ws.onopen = () => {
+    console.log('Conectado ao WebSocket do backend');
+  };
+
   term.open(HyperShell.value);
-  fitAddon.fit()
+  fitAddon.fit();
   term.focus();
 
-  term.write(`\x1b[1;32m${banner}\x1b[0m`);
+  // Exibir banner inicial
+  displayBanner();
 
   let userInput = '';
 
- 
   ws.onmessage = (event) => {
-
-     const { type, data, url } = JSON.parse(event.data);
-
-    switch(type){ 
-
+    const { type, data, url } = JSON.parse(event.data);
+    
+    switch(type) {
       case "output":
         term.writeln(data);
         break;
       case "clear":
-        term.write(`\x1b[1;32m${banner}\x1b[0m`)
         term.clear();
+        displayBanner();
         break;
       case "prompt":
         term.write("\r\n" + data);
         break;
       case "url":
-        console.log('Pegamos a URL', url);
+        console.log('Pegou a URL', url);
         window.open(url);
         break;
       case "banner":
-        term.write(`\x1b[1;32m${banner}\x1b[0m`);
+        displayBanner();
         break;
       case "clearAll":
         term.clear();
+        break;
     }
   };
 
-  
-
   term.onData((data) => {
-    if (data === '\r') { 
-      term.write("\r\n\n")
+    if (data === '\r') {
+      term.write("\r\n\n");
       ws.send(userInput);
       userInput = '';
     } else if (data === '\u007F') {
@@ -88,6 +118,21 @@ onMounted(() => {
       term.write(data);
     }
   });
+
+  const handleResize = () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      fitAddon.fit();
+    }, 100);
+  };
+
+  window.addEventListener('resize', handleResize);
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+    if (ws) ws.close();
+    if (term) term.dispose();
+  });
 });
 </script>
 
@@ -95,5 +140,7 @@ onMounted(() => {
 .terminal-container {
   width: 100%;
   height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
 }
 </style>
