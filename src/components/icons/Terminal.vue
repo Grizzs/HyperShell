@@ -8,11 +8,13 @@ import { FitAddon } from 'xterm-addon-fit';
 import { Terminal } from 'xterm';
 import 'xterm/css/xterm.css';
 import banner from '../../assets/MainBanner.txt?raw';
+import ws from '../../utils/initWs';
+import { initTerminal } from '../../utils/initTerminalEvent.js';
 
 const HyperShell = ref(null);
 let term;
 let fitAddon;
-let ws;
+
 let resizeTimeout;
 
 const canFitBanner = (cols) => {
@@ -61,20 +63,16 @@ onMounted(() => {
   fitAddon = new FitAddon();
   term.loadAddon(fitAddon);
 
-  ws = new WebSocket('ws://localhost:3000');
-  
-  ws.onopen = () => {
-    console.log('Conectado ao WebSocket do backend');
-  };
 
   term.open(HyperShell.value);
   fitAddon.fit();
   term.focus();
 
-  // Exibir banner inicial
   displayBanner();
 
   let userInput = '';
+  initTerminal(term)
+  
 
   ws.onmessage = (event) => {
     const { type, data, url } = JSON.parse(event.data);
@@ -125,7 +123,7 @@ onMounted(() => {
       fitAddon.fit();
     }, 100);
   };
-
+  
   window.addEventListener('resize', handleResize);
 
   onUnmounted(() => {
