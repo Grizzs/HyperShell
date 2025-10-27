@@ -2,7 +2,7 @@ import sherlock from '../assets/sherlock.txt?raw';
 import { randomChooser } from './mathChooser';
 
 const modulosMsf = import.meta.glob('../assets/metasploitAssets/*.txt', { 
-  query: '?raw', // Era ?? mas deveria ser apenas ?
+  query: '?raw',
   eager: true
 });
 const msfArts = Object.values(modulosMsf).map(module => module.default);
