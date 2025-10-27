@@ -9,5 +9,3 @@
   Bem vindo ao HyperShell
 
   Curso Técnico em Desenvolvimento de Sistemas - IFsul CAVG
-
-

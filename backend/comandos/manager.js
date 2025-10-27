@@ -141,16 +141,33 @@ export class Manager {
         return output.join('\r\n');
       }
     }
-    this.comandos['teste'] = {
-      descricao: "Limpa Tela",
+    this.comandos['github'] = {
+      descricao: "Github do Criador",
       execute: async (args, ws) => {
-        ws.send(JSON.stringify({ type: 'clearAll' }));
-        return null;
+        ws.send(JSON.stringify({ 
+          type: 'url', 
+          url: 'https://github.com/Grizzs' 
+        }));
+        return "Abrindo Github...";
       }
-    
-  };
-    
-    
+    };
+    this.comandos['sherlock'] = {
+      descricao: "Ferramenta de OSINT para facilitar procura de um usuário em redes sociais",
+      execute: async (args, ws) => {
+        ws.send(JSON.stringify({
+          type: 'sherlock'
+        }));
+
+      }
+    }
+    this.comandos['msfconsole'] = {
+      descricao: "Interface do Metasploit para executar scripts, payloads, pentest etc",
+      execute: async (args, ws) => {
+        ws.send(JSON.stringify({
+          type: 'msfconsole',
+        }))
+      }
+    }
 
   }
 
@@ -169,9 +186,3 @@ export class Manager {
 }
 
 
-/*
-function clearAll(ws){
-  ws.send(JSON.stringify({ type: 'clearAll' }));
-  return null;
-}
-  */ 

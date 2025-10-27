@@ -1,0 +1,27 @@
+      .:okOOOkdc'           'cdkOOOko:.                                                                                                                                                                    
+    .xOOOOOOOOOOOOc       cOOOOOOOOOOOOx.                                                                                                                                                                  
+   :OOOOOOOOOOOOOOOk,   ,kOOOOOOOOOOOOOOO:                                                                                                                                                                 
+  'OOOOOOOOOkkkkOOOOO: :OOOOOOOOOOOOOOOOOO'                                                                                                                                                                
+  oOOOOOOOO.    .oOOOOoOOOOl.    ,OOOOOOOOo                                                                                                                                                                
+  dOOOOOOOO.      .cOOOOOc.      ,OOOOOOOOx                                                                                                                                                                
+  lOOOOOOOO.         ;d;         ,OOOOOOOOl                                                                                                                                                                
+  .OOOOOOOO.   .;           ;    ,OOOOOOOO.                                                                                                                                                                
+   cOOOOOOO.   .OOc.     'oOO.   ,OOOOOOOc                                                                                                                                                                 
+    oOOOOOO.   .OOOO.   :OOOO.   ,OOOOOOo                                                                                                                                                                  
+     lOOOOO.   .OOOO.   :OOOO.   ,OOOOOl                                                                                                                                                                   
+      ;OOOO'   .OOOO.   :OOOO.   ;OOOO;                                                                                                                                                                    
+       .dOOo   .OOOOocccxOOOO.   xOOd.                                                                                                                                                                     
+         ,kOl  .OOOOOOOOOOOOO. .dOk,                                                                                                                                                                       
+           :kk;.OOOOOOOOOOOOO.cOk:                                                                                                                                                                         
+             ;kOOOOOOOOOOOOOOOk:                                                                                                                                                                           
+               ,xOOOOOOOOOOOx,                                                                                                                                                                             
+                 .lOOOOOOOl.                                                                                                                                                                               
+                    ,dOd,                                                                                                                                                                                  
+                      .   
+
+       =[ metasploit v6.4.84-dev                                ]
++ -- --=[ 2,547 exploits - 1,309 auxiliary - 1,683 payloads     ]
++ -- --=[ 432 post - 49 encoders - 13 nops - 9 evasion          ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+The Metasploit Framework is a Rapid7 Open Source Project

@@ -1,3 +1,13 @@
+import sherlock from '../assets/sherlock.txt?raw';
+import { randomChooser } from './mathChooser';
+
+const modulosMsf = import.meta.glob('../assets/metasploitAssets/*.txt', { 
+  query: '?raw', // Era ?? mas deveria ser apenas ?
+  eager: true
+});
+const msfArts = Object.values(modulosMsf).map(module => module.default);
+
+
 export const criaHandler = (term, displayBanner) => {
   return {
     output: (data) => {
@@ -24,7 +34,21 @@ export const criaHandler = (term, displayBanner) => {
 
     clearAll: () => {
       term.clear();
+    },
+
+    sherlock: () => {
+        term.clear();
+        term.write(sherlock)
+        term.write('Use sherlock <args..> <username> \n')
+        
+    },
+
+    msfconsole: () => {
+        const escolhido = randomChooser(msfArts)
+        term.write(`${escolhido} \n`)
     }
+ 
+
   };
 };
 
