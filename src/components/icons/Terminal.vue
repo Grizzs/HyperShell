@@ -8,6 +8,8 @@ import { FitAddon } from 'xterm-addon-fit';
 import { Terminal } from 'xterm';
 import 'xterm/css/xterm.css';
 import banner from '../../assets/MainBanner.txt?raw';
+import smallBanner from '../../assets/SmallBanner.txt?raw';
+import { criaHandler, handleMessage } from '../../utils/messageHandler.js';
 import ws from '../../utils/initWs';
 import { initTerminal } from '../../utils/initTerminalEvent.js';
 
@@ -30,17 +32,7 @@ const displayBanner = () => {
   if (canFitBanner(cols)) {
     term.write(`\x1b[1;32m${banner}\x1b[0m`);
   } else {
-    term.writeln('\x1b[1;32m╔════════════════════════════════════════╗\x1b[0m');
-    term.writeln('\x1b[1;32m║      HyperShell (HS)                   ║\x1b[0m');
-    term.writeln('\x1b[1;32m║  Not A Corporation. All Hype reserved. ║\x1b[0m');
-    term.writeln('\x1b[1;32m╚════════════════════════════════════════╝\x1b[0m');
-    term.writeln('');
-
-      term.writeln('');
-      term.writeln('Bem vindo ao HyperShell');
-      term.writeln('');
-      term.writeln('Curso Técnico em Desenvolvimento de Sistemas - IFsul CAVG');
-      term.writeln('');
+    term.write(`\x1b[1;32m${smallBanner}\x1b[0m`); // Banner menor pra telas pequenas 
   }
   
 
@@ -71,34 +63,11 @@ onMounted(() => {
   displayBanner();
 
   let userInput = '';
-  initTerminal(term)
-  
+
+  const handlers = criaHandler(term, displayBanner);
 
   ws.onmessage = (event) => {
-    const { type, data, url } = JSON.parse(event.data);
-    
-    switch(type) {
-      case "output":
-        term.writeln(data);
-        break;
-      case "clear":
-        term.clear();
-        displayBanner();
-        break;
-      case "prompt":
-        term.write("\r\n" + data);
-        break;
-      case "url":
-        console.log('Pegou a URL', url);
-        window.open(url);
-        break;
-      case "banner":
-        displayBanner();
-        break;
-      case "clearAll":
-        term.clear();
-        break;
-    }
+    handleMessage(event, handlers);
   };
 
   term.onData((data) => {
