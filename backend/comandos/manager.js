@@ -170,7 +170,7 @@ export class Manager {
       }
     }
     this.comandos['cat'] ={
-      descricao: "Ler, Criar e Combinar arquivos de texto", // aqui
+      descricao: "Ler e Criar arquivos de texto",
       execute: async (args, ws) => {
         const nomeArq = args[0];
 

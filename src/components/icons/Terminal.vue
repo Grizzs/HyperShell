@@ -25,14 +25,18 @@ const canFitBanner = (cols) => {
   return cols >= maxLineLength;
 };
 
+const time = new Date()
 
 const displayBanner = () => {
   const cols = term.cols;
   
   if (canFitBanner(cols)) {
-    term.write(`\x1b[1;32m${banner}\x1b[0m`);
+    term.write(`\x1b[1;32m${time}\x1b[0m`)
+    term.write(`\x1b[1;32m${banner}\x1b[0m \r\n`);
+    term.writeln(`\x1b[1;32mDigite \x1b[36m'help'\x1b[1;32m para visualizar a lista de comandos.\x1b[0m`)
   } else {
-    term.write(`\x1b[1;32m${smallBanner}\x1b[0m`); 
+    term.write(`\x1b[1;32m${smallBanner}\x1b[0m `); 
+    term.writeln(`\x1b[1;32mDigite \x1b[36m'help'\x1b[1;32m para visualizar a lista de comandos.\x1b[0m`)
   }
   
 
@@ -44,12 +48,15 @@ onMounted(() => {
     cursorStyle: "underline",
     cursorInactiveStyle: "block",
     fontSize: 20,
+    rightClickSelectsWord: true,
+    convertEol: true,
+    scrollback: 1000,
     theme: {
       background: '#161720',
-      foreground: '#C3E88D',
+      foreground: '#00FF00',
       selectionBackground: '#2c2e3d'
     },
-    rows: 60,
+    rows: 40,
     cols: 80
   });
 
@@ -71,7 +78,23 @@ onMounted(() => {
     handleMessage(m, handlers);
   };
 
+  
+
   term.onData((data) => {
+
+    if (data === '\x03') {
+    document.execCommand('copy');
+    return;
+    }
+
+    if (data === '\x16') {
+      navigator.clipboard.readText().then(text => {
+        userInput += text;
+        term.write(text);
+      });
+      return;
+    }
+
     if (data === '\r') {
       term.write("\r\n\n");
       ws.send(userInput);
@@ -111,4 +134,5 @@ onMounted(() => {
   padding: 10px;
   box-sizing: border-box;
 }
+
 </style>

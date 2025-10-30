@@ -21,7 +21,7 @@ const wss = new WebSocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client conectado ao WebSocket');
 
-  ws.currentDirId = 22;
+  ws.currentDirId = 20;
   ws.currentPath = 'user';
 
 
