@@ -1,0 +1,22 @@
+
+ Welcome. Shall we play a game?
+
+> GLOBAL THERMONUCLEAR WAR
+
+ WHICH SIDE DO YOU WANT?
+
+    1.    UNITED STATES
+    2.    SOVIET UNION
+
+ PLEASE CHOOSE ONE: 1
+
+    AWAITING FIRST STRIKE COMMAND
+    -----------------------------
+
+
+       =[ metasploit v6.4.84-dev                                ]
++ -- --=[ 2,547 exploits - 1,309 auxiliary - 1,683 payloads     ]
++ -- --=[ 432 post - 49 encoders - 13 nops - 9 evasion          ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+The Metasploit Framework is a Rapid7 Open Source Project

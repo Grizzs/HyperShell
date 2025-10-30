@@ -47,7 +47,7 @@ onMounted(() => {
     cursorBlink: true,
     cursorStyle: "underline",
     cursorInactiveStyle: "block",
-    fontSize: 20,
+    fontSize: 16,
     rightClickSelectsWord: true,
     convertEol: true,
     scrollback: 1000,
@@ -55,9 +55,7 @@ onMounted(() => {
       background: '#161720',
       foreground: '#00FF00',
       selectionBackground: '#2c2e3d'
-    },
-    rows: 40,
-    cols: 80
+    }
   });
 
   fitAddon = new FitAddon();
@@ -133,6 +131,8 @@ onMounted(() => {
   height: 100%;
   padding: 10px;
   box-sizing: border-box;
+  box-sizing: border-box;
+  zoom: 1.25; 
 }
 
 </style>
