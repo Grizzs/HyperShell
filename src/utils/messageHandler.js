@@ -39,15 +39,21 @@ export const criaHandler = (term, displayBanner) => {
     sherlock: () => {
         term.clear();
         term.write(sherlock)
-        term.write('Use sherlock <args..> <username> \n')
         
     },
 
     msfconsole: () => {
         const escolhido = randomChooser(msfArts)
         term.write(`${escolhido} \n`)
+    },
+
+    catTxt: (data) => {
+      const ln = data.split('\n');
+      ln.forEach(linha => {
+        term.writeln(linha)
+      });
+
     }
- 
 
   };
 };
@@ -60,5 +66,6 @@ export const handleMessage = (event, handlers) => {
     handler(data, url);
   } else {
     console.warn(`Tipo desconhecido: ${type}`);
+    
   }
 };

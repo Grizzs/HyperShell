@@ -11,7 +11,7 @@ import banner from '../../assets/MainBanner.txt?raw';
 import smallBanner from '../../assets/SmallBanner.txt?raw';
 import { criaHandler, handleMessage } from '../../utils/messageHandler.js';
 import ws from '../../utils/initWs';
-import { initTerminal } from '../../utils/initTerminalEvent.js';
+// import { initTerminal } from '../../utils/initTerminalEvent.js';
 
 const HyperShell = ref(null);
 let term;
@@ -32,7 +32,7 @@ const displayBanner = () => {
   if (canFitBanner(cols)) {
     term.write(`\x1b[1;32m${banner}\x1b[0m`);
   } else {
-    term.write(`\x1b[1;32m${smallBanner}\x1b[0m`); // Banner menor pra telas pequenas 
+    term.write(`\x1b[1;32m${smallBanner}\x1b[0m`); 
   }
   
 
@@ -45,10 +45,11 @@ onMounted(() => {
     cursorInactiveStyle: "block",
     fontSize: 20,
     theme: {
-      background: '#131e1e',
-      foreground: '#79FA05',
+      background: '#161720',
+      foreground: '#C3E88D',
+      selectionBackground: '#2c2e3d'
     },
-    rows: 24,
+    rows: 60,
     cols: 80
   });
 
@@ -66,8 +67,8 @@ onMounted(() => {
 
   const handlers = criaHandler(term, displayBanner);
 
-  ws.onmessage = (event) => {
-    handleMessage(event, handlers);
+  ws.onmessage = (m) => {
+    handleMessage(m, handlers);
   };
 
   term.onData((data) => {

@@ -1,3 +1,4 @@
+import ws from '../../src/utils/initWs.js';
 import { pool } from '../src/db.js';
 
 
@@ -133,7 +134,7 @@ export class Manager {
             '  \x1b[1;36m║        MANUAL DE COMANDOS        ║\x1b[0m', 
             '  \x1b[1;36m╚══════════════════════════════════╝\x1b[0m', ''];
         
-        comandos.forEach(cmd => {
+        comandos.sort().forEach(cmd => {
           const desc = this.comandos[cmd].descricao || '';
           output.push(`  \x1b[1;33m${cmd.padEnd(15)}\x1b[0m - ${desc}`);
         });
@@ -161,13 +162,49 @@ export class Manager {
       }
     }
     this.comandos['msfconsole'] = {
-      descricao: "Interface do Metasploit para executar scripts, payloads, pentest etc",
+      descricao: "Interface para executar scripts, payloads, pentest etc",
       execute: async (args, ws) => {
         ws.send(JSON.stringify({
           type: 'msfconsole',
         }))
       }
     }
+    this.comandos['cat'] ={
+      descricao: "Ler, Criar e Combinar arquivos de texto", // aqui
+      execute: async (args, ws) => {
+        const nomeArq = args[0];
+
+        if(!nomeArq) {
+          return "Use: cat <nome_do_arquivo>";
+        }
+        try {
+          const res = await pool.query(
+            `SELECT conteudo
+            FROM arquivo 
+            WHERE nome_arquivo = $1 AND idiretorio = $2`,
+            [nomeArq, ws.currentDirId]
+          );
+
+
+          if (res.rows.length === 0) {
+            return `cat ${nomeArq}: não encontrado no diretório atual`;
+          }
+
+          const arquivo = res.rows[0];
+          ws.send(JSON.stringify({
+            type: 'catTxt',
+            data: arquivo.conteudo || "Arquivo não vazio"
+          }))
+
+
+        } catch (error) {
+          console.error('Erro ao executar cat', error);
+          return `cat erro ao ler arquivo ${error.message}`;
+        }
+      }
+    }
+
+    
 
   }
 

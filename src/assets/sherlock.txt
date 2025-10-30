@@ -15,4 +15,14 @@
                      ~      |   / |    |	
                              |_ /   \ _|	
                            /~___|  /____\	
+
+
+    O Sherlock é uma ferramenta usada para encontrar perfis de uma pessoa em diferentes redes
+  sociais e sites, a partir de um nome de usuário. Ela faz isso de forma automática, basta digitar um nome
+  e o Sherlock procura em centenas de plataformas — como Instagram, Twitter, 
+  GitHub, TikTok, Reddit, entre outras — para ver se existe alguma conta com esse nome.
+
+    É muito útil em investigações digitais, análises de segurança ou até recuperação de informações públicas.
+  Por exemplo: um analista de segurança pode usar o Sherlock para verificar se um mesmo usuário usa o mesmo nome em vários sites,
+  o que pode revelar padrões de comportamento ou vazamento de informações pessoais.
                            
