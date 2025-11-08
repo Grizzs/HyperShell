@@ -51,7 +51,6 @@ onMounted(() => {
     fontWeight: 900,
     rightClickSelectsWord: true,
     convertEol: true,
-    scrollback: 1000,
     theme: {
       background: '#161720',
       foreground: '#00FF00',
@@ -81,10 +80,6 @@ onMounted(() => {
 
   term.onData((data) => {
 
-    if (data === '\x03') {
-    document.execCommand('copy');
-    return;
-    }
 
     if (data === '\x16') {
       navigator.clipboard.readText().then(text => {
@@ -135,5 +130,8 @@ onMounted(() => {
   box-sizing: border-box;
   zoom: 1.25; 
 }
+
+
+
 
 </style>

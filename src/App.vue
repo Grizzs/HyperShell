@@ -16,4 +16,5 @@ import HyperShell from './components/icons/Terminal.vue';
   display: flex; 
   flex-direction: column; 
 }
+
 </style>

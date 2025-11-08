@@ -1,5 +1,7 @@
+import { extractRuntimeProps } from 'vue/compiler-sfc';
 import ws from '../../src/utils/initWs.js';
 import { pool } from '../src/db.js';
+import { runnerImport } from 'vite';
 
 
 let last_cmd = ''
@@ -102,9 +104,9 @@ export class Manager {
       } 
     }
     this.comandos['whoami'] = {
-      descricao: "Quem sou Eu",
-      execute: async () => {
-        return "User"
+      descricao: "Lista o usuário atual",
+      execute: async (args, ws) => {
+        return ws.currentUser
       }
     }
     this.comandos['linkedin'] = {
@@ -221,7 +223,7 @@ export class Manager {
         const findUsr = result.rows[0] 
 
         if(findUsr){
-          return "Este usuário já existe"
+          return `Usuário: ${user} já existe`
         }
         try {
           await pool.query("INSERT INTO usuarios(username) VALUES ($1)", [user])
@@ -240,6 +242,13 @@ export class Manager {
         if(!user){
           return "Use deluser <novo_usuario>"
         }
+        else if(user == 'root') {
+          return "Não é possivel excluir este usuário"
+        }
+        else if(user == ws.currentUser){
+          return `su root antes de deletar o usuário ${user}`
+        }
+
         const result = await pool.query("SELECT username FROM usuarios WHERE username = $1", [user])
         const findUsr = result.rows[0] 
 
@@ -252,15 +261,45 @@ export class Manager {
               true
             )
           `)
-
           } catch (err) {
             console.log(`Não foi possivel excluir o usuário ${user}`, err);
             return "Erro inesperado ao tentar deletar usuário, verifique os logs"
           }
         }
+        else{
+          return `Usuário: ${user} não existe`
+        }
         
       }
     }
+    this.comandos['su'] = {
+      descricao: "Trocar de usuário",
+      execute: async (args, ws) => {
+        const user = args[0]
+
+        if(!user){
+          return "Use su <usuario>"
+        }
+
+        const result = await pool.query("SELECT username FROM usuarios WHERE username = $1", [user])
+        const findUsr = result.rows[0] 
+
+        if(findUsr)
+          try{
+            ws.currentUser = user
+            return "";
+          }
+          catch(err){
+            return "Erro inesperado trocar de usuário"
+            console.log("Não foi possivel alterar ws.currentUser", err)
+          }
+        else{
+          return `Usuário: ${user} não existe`
+        }
+
+      }
+    }
+
 
     
 
@@ -271,7 +310,7 @@ export class Manager {
     const command = this.comandos[cmdName];
 
     if (!command) {
-      return `Comando "${cmdName}" não encontrado`;
+      return ``;
     }
     console.log("Executando:", command);
     last_cmd = `${cmdName} ${args.join(' ')}`;
