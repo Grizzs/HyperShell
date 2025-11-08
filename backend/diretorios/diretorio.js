@@ -1,4 +1,7 @@
+// Esse módulo não é utilizado no código, serviu apenas para testes
 import { pool } from '../src/db.js';
+
+
 
 let diretorios = [];
 

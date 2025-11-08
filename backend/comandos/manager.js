@@ -177,6 +177,12 @@ export class Manager {
         if(!nomeArq) {
           return "Use: cat <nome_do_arquivo>";
         }
+
+        if(nomeArq == '/etc/passwd'){
+          const allUsers = await pool.query(`SELECT username FROM usuarios`)  
+          return allUsers.rows.map(row => row.username).join("\n")
+        }
+
         try {
           const res = await pool.query(
             `SELECT conteudo
@@ -224,8 +230,35 @@ export class Manager {
           console.log(`Não foi possivel inserir o usuário ${user}`, err);
           return "Erro inesperado ao tentar cadastrar usuário, verifique os logs"
         }
+      }
+    }
+     this.comandos['deluser'] = {
+      descricao: "Excluir usuário",
+      execute: async (args, ws) => {
+        const user = args[0]
 
+        if(!user){
+          return "Use deluser <novo_usuario>"
+        }
+        const result = await pool.query("SELECT username FROM usuarios WHERE username = $1", [user])
+        const findUsr = result.rows[0] 
 
+        if(findUsr){
+          try {
+          await pool.query("DELETE FROM usuarios WHERE username = ($1)", [user])
+          await pool.query(`
+            SELECT setval('usuarios_id_seq', 
+              COALESCE((SELECT MAX(id) FROM usuarios), 0), 
+              true
+            )
+          `)
+
+          } catch (err) {
+            console.log(`Não foi possivel excluir o usuário ${user}`, err);
+            return "Erro inesperado ao tentar deletar usuário, verifique os logs"
+          }
+        }
+        
       }
     }
 
