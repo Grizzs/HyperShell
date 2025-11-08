@@ -3,23 +3,25 @@ import { WebSocketServer } from 'ws';
 import { Manager } from '../comandos/manager.js';
 
 const PORT = 3000;
-// const PROMPT = 'user@hypershell:$ ';
 const cmdManager = new Manager();
-
 const server = app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
-
 console.log("Bombando")
 
+const currentUsr = 'root'
+
+
+
 const getPrompt = (ws) => {
-  return `user@${ws.currentPath || '/'}:$ `;
+  const PROMPT = ws.currentPath
+  return `\x1b[31m${currentUsr}@${PROMPT}:$\x1b[0m ` || '/';
 };
 
 const wss = new WebSocketServer({ server });
 
 wss.on('connection', (ws) => {
-  console.log('Client conectado ao WebSocket');
+  console.log('Client conectado no WebSocket');
 
   ws.currentDirId = 20;
   ws.currentPath = 'user';
@@ -49,6 +51,6 @@ wss.on('connection', (ws) => {
     data: getPrompt(ws)
   }));
 
-  ws.on('close', () => console.log('Client desconectado'));
+  ws.on('close', () => console.log('Desconectado'));
 
 });

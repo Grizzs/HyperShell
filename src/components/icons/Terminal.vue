@@ -48,6 +48,7 @@ onMounted(() => {
     cursorStyle: "underline",
     cursorInactiveStyle: "block",
     fontSize: 16,
+    fontWeight: 900,
     rightClickSelectsWord: true,
     convertEol: true,
     scrollback: 1000,

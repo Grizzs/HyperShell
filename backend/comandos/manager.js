@@ -203,6 +203,31 @@ export class Manager {
         }
       }
     }
+    this.comandos['useradd'] = {
+      descricao: "Adicionar usuário",
+      execute: async (args, ws) => {
+        const user = args[0]
+
+        if(!user){
+          return "Use useradd <novo_usuario>"
+        }
+        const result = await pool.query("SELECT username FROM usuarios WHERE username = $1", [user])
+        const findUsr = result.rows[0] 
+
+        if(findUsr){
+          return "Este usuário já existe"
+        }
+        try {
+          await pool.query("INSERT INTO usuarios(username) VALUES ($1)", [user])
+
+        } catch (err) {
+          console.log(`Não foi possivel inserir o usuário ${user}`, err);
+          return "Erro inesperado ao tentar cadastrar usuário, verifique os logs"
+        }
+
+
+      }
+    }
 
     
 
