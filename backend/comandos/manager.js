@@ -1,10 +1,8 @@
 import { extractRuntimeProps } from 'vue/compiler-sfc';
 import ws from '../../src/utils/initWs.js';
 import { pool } from '../src/db.js';
-import { runnerImport } from 'vite';
 
 
-let last_cmd = ''
 
 export class Manager {
   constructor() {
@@ -172,7 +170,7 @@ export class Manager {
       }
     }
     this.comandos['cat'] ={
-      descricao: "Ler e Criar arquivos de texto",
+      descricao: "Ler o contéudo de arquivos",
       execute: async (args, ws) => {
         const nomeArq = args[0];
 
@@ -184,6 +182,7 @@ export class Manager {
           const allUsers = await pool.query(`SELECT username FROM usuarios`)  
           return allUsers.rows.map(row => row.username).join("\n")
         }
+
 
         try {
           const res = await pool.query(
@@ -299,21 +298,42 @@ export class Manager {
 
       }
     }
+    this.comandos["ifconfig"] = {
+      descricao: "Configurações de Rede",
+      execute: async (args, ws) => {
+        
+        const newIP = args[0]
 
+        if(!newIP){
+          return `Endereço IP: ${ws.defaultIP}`;
+        }
+        const ipRegex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
-    
-
+        if (!ipRegex.test(newIP)) {
+          return "Formato de IP inválido. Use: ifconfig <xxx.xxx.xxx.xxx>";
+          return;
+        }
+        ws.defaultIP = newIP;
+        return `Endereço IP: ${ws.defaultIP}`;
+      }
+      
+    }
   }
 
   async execute(input, ws) {
     const [cmdName, ...args] = input.trim().split(" ");
     const command = this.comandos[cmdName];
 
-    if (!command) {
-      return ``;
+    if(!input.trim()){
+      return ''
     }
+
+    if (!command) {
+      return `${input}: comando não encontrado`;
+    }
+
     console.log("Executando:", command);
-    last_cmd = `${cmdName} ${args.join(' ')}`;
+
 
     return await command.execute(args, ws);
   }

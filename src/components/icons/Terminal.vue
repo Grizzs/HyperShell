@@ -19,6 +19,11 @@ let fitAddon;
 
 let resizeTimeout;
 
+const atualizaInput = (newVal) => {
+    userInput = newVal;
+  };
+
+
 const canFitBanner = (cols) => {
   const bannerLines = banner.split('\n');
   const maxLineLength = Math.max(...bannerLines.map(line => line.length));
@@ -73,6 +78,8 @@ onMounted(() => {
   const handlers = criaHandler(term, displayBanner);
 
   ws.onmessage = (m) => {
+     const parsed = JSON.parse(m.data);
+
     handleMessage(m, handlers);
   };
 
@@ -80,14 +87,10 @@ onMounted(() => {
 
   term.onData((data) => {
 
-
-    if (data === '\x16') {
-      navigator.clipboard.readText().then(text => {
-        userInput += text;
-        term.write(text);
-      });
-      return;
-    }
+    if (data === '\x1b[A') return
+    if (data === '\x1b[B') return
+    if (data === '\x1b[C') return
+    if (data === '\x1b[D') return
 
     if (data === '\r') {
       term.write("\r\n\n");

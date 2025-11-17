@@ -8,7 +8,7 @@ const modulosMsf = import.meta.glob('../assets/metasploitAssets/*.txt', {
 const msfArts = Object.values(modulosMsf).map(module => module.default);
 
 
-export const criaHandler = (term, displayBanner) => {
+export const criaHandler = (term, displayBanner, atualizaInput) => {
   return {
     output: (data) => {
       term.writeln(data);
@@ -52,9 +52,8 @@ export const criaHandler = (term, displayBanner) => {
       ln.forEach(linha => {
         term.writeln(linha)
       });
-
     }
-
+  
   };
 };
 

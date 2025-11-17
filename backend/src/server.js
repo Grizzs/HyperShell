@@ -10,8 +10,6 @@ const server = app.listen(PORT, () => {
 console.log("Bombando")
 
 
-
-
 const getPrompt = (ws) => {
   const USER = ws.currentUser
   const PROMPT = `/${ws.currentPath.split('/').filter(Boolean).pop() || ''}`;  
@@ -27,7 +25,7 @@ wss.on('connection', (ws) => {
   ws.currentDirId = 20;
   ws.currentUser = 'root'
   ws.currentPath = 'user';
-
+  ws.defaultIP = "192.168.1.17"
 
   ws.on('message', async (message) => {
     const input = message.toString().trim();
@@ -52,6 +50,8 @@ wss.on('connection', (ws) => {
     data: getPrompt(ws)
   }));
 
-  ws.on('close', () => console.log('Desconectado'));
+  ws.onclose = () => {
+    console.log('Desconectado, tentando reconectar...')
+  };
 
 });
